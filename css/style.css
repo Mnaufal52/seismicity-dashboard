@@ -168,35 +168,6 @@ ul.quake-list {
     line-height: 1.4;
 }
 
-/* --- RESPONSIVE DESIGN UNTUK MOBILE --- */
-@media (max-width: 900px) {
-    /* Kembalikan fungsi scroll utama web kalau dibuka di HP */
-    body {
-        height: auto;
-        overflow: auto; 
-    }
-    
-    .dashboard-container { height: auto; }
-    
-    .kpi-row { grid-template-columns: repeat(2, 1fr); }
-    
-    .main-content {
-        display: flex;
-        flex-direction: column;
-        height: auto;
-    }
-    
-    .map-wrapper { min-height: 500px; } /* Peta butuh tinggi fix di HP */
-    
-    .list-widget { min-height: 400px; } /* Beri tinggi fix agar list bisa discroll di HP */
-    
-    .dashboard-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-}
-
 /* --- ANIMASI --- */
 .pulse-alert {
     background-color: #D0021B;
@@ -224,4 +195,57 @@ ul.quake-list {
 @keyframes swarm-glowing {
     0% { filter: drop-shadow(0 0 2px rgba(255, 0, 0, 0.4)); }
     100% { filter: drop-shadow(0 0 18px rgba(255, 0, 0, 1)); }
+}
+
+/* --- RESPONSIVE DESIGN UNTUK MOBILE (HANYA BERLAKU DI HP) --- */
+@media (max-width: 900px) {
+    body {
+        height: auto;
+        overflow: auto; 
+        padding: 10px; /* Kurangi jarak pinggir layar agar lebih lega */
+    }
+    
+    .dashboard-container { height: auto; gap: 10px; }
+    
+    /* FIX #3: Header & KPI Dikecilkan agar Peta naik ke layar utama */
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px 15px;
+    }
+    .dashboard-header h1 { font-size: 18px; }
+    .dashboard-header p { font-size: 12px; }
+    
+    .kpi-row { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 10px; 
+    }
+    .kpi-card { padding: 10px; } /* Kotak lebih tipis */
+    .kpi-card h3 { font-size: 10px; } /* Teks judul KPI mengecil */
+    .kpi-value { font-size: 22px; margin-top: 2px; } /* Angka mengecil */
+    
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        gap: 10px;
+    }
+    
+    /* FIX #1 & #4: Memastikan Peta proporsional dan Legend/Popup mengecil */
+    .map-wrapper { min-height: 450px; } 
+    
+    .leaflet-control { font-size: 11px !important; } /* Teks legenda mengecil */
+    .leaflet-control-layers-expanded {
+        padding: 6px !important;
+        max-height: 150px; /* Cegah legenda memanjang ke bawah */
+        overflow-y: auto;
+    }
+    .leaflet-popup-content { font-size: 12px; margin: 10px; } /* Popup merapat */
+    
+    /* FIX #2: Kunci tinggi list agar memunculkan scrollbar di dalamnya */
+    .list-widget { 
+        height: 350px; /* Kunci tingginya (jangan pakai min-height) */
+        min-height: unset;
+    }
 }
