@@ -1,0 +1,227 @@
+/* --- 1. RESET DASAR --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+    background-color: #f4f6f8;
+    color: #333;
+    padding: 20px;
+    height: 100vh; /* KUNCI 1: Kunci tinggi body sama dengan tinggi layar */
+    overflow: hidden; /* KUNCI 2: Sembunyikan scrollbar utama web */
+}
+
+/* --- 2. WADAH UTAMA --- */
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%; /* Penuhi sisa tinggi dari body */
+}
+
+/* --- HEADER --- */
+.dashboard-header {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid #2c3e50;
+}
+
+.header-right {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.header-right label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}
+
+#region-selector {
+    padding: 7px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.badge-live {
+    background-color: #e8f8f5;
+    color: #27ae60;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    border: 1px solid #2ecc71;
+}
+
+/* --- 3. BARIS KPI (ALARM) --- */
+.kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* DIPERBAIKI: 4 Kolom untuk 4 kartu */
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.kpi-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-top: 4px solid #3498db;
+}
+
+.kpi-card.warning { border-color: #e74c3c; background-color: #fffaf9; }
+.kpi-card.info { border-color: #95a5a6; }
+
+.kpi-value {
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 5px;
+}
+
+/* --- 4. KONTEN UTAMA (PETA & SIDEBAR) --- */
+.main-content {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 15px;
+    flex-grow: 1; /* KUNCI 3: Otomatis mengisi sisa ruang di bawah KPI */
+    min-height: 0; /* KUNCI 4: Mencegah grid melar ke bawah */
+}
+
+/* --- KOLOM KIRI: PETA --- */
+.map-wrapper {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0; /* KUNCI 5: Jaga agar wrapper peta tidak bocor */
+}
+
+#map {
+    width: 100%;
+    flex-grow: 1;
+    z-index: 1;
+}
+
+/* --- KOLOM KANAN: SIDEBAR --- */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%;
+    min-height: 0; /* KUNCI 6: Mencegah sidebar merusak tinggi layar */
+}
+
+.chart-widget, .list-widget {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.chart-box {
+    position: relative;
+    height: 200px;
+    width: 100%;
+    flex-shrink: 0; /* Pastikan chart tidak mengecil saat list gempa bertambah */
+}
+
+.list-widget {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0; /* KUNCI 7: Paksa widget ini mengaktifkan scroll di dalamnya */
+}
+
+ul.quake-list {
+    list-style: none;
+    margin-top: 10px;
+    padding: 0;
+    flex-grow: 1;
+    overflow-y: auto; /* Ini sekarang akan berfungsi! */
+    min-height: 0;
+}
+
+.quake-list li {
+    border-bottom: 1px solid #eee;
+    padding: 12px 5px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* --- RESPONSIVE DESIGN UNTUK MOBILE --- */
+@media (max-width: 900px) {
+    /* Kembalikan fungsi scroll utama web kalau dibuka di HP */
+    body {
+        height: auto;
+        overflow: auto; 
+    }
+    
+    .dashboard-container { height: auto; }
+    
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .map-wrapper { min-height: 500px; } /* Peta butuh tinggi fix di HP */
+    
+    .list-widget { min-height: 400px; } /* Beri tinggi fix agar list bisa discroll di HP */
+    
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
+
+/* --- ANIMASI --- */
+.pulse-alert {
+    background-color: #D0021B;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    animation: pulsing 1.5s infinite; 
+}
+
+@keyframes pulsing {
+    0% { box-shadow: 0 0 0 0 rgba(208, 2, 27, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(208, 2, 27, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(208, 2, 27, 0); }
+}
+
+.swarm-alert {
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 20px solid #FF0000;
+    position: relative;
+    animation: swarm-glowing 1s infinite alternate; 
+}
+
+@keyframes swarm-glowing {
+    0% { filter: drop-shadow(0 0 2px rgba(255, 0, 0, 0.4)); }
+    100% { filter: drop-shadow(0 0 18px rgba(255, 0, 0, 1)); }
+}

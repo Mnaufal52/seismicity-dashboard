@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seismicity Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div>
+                <h1>Tectonic–Seismic Activity Monitoring</h1>
+                <p>Monitoring aktivitas seismik regional periode 24 Jam Terakhir</p>
+            </div>
+            <div class="header-right">
+                <label for="region-selector">Filter Wilayah</label>
+                <select id="region-selector">
+                    <option value="global">🌍 Global (Seluruh Dunia)</option>
+                    <option value="indo" selected>🇮🇩 Seluruh Indonesia</option>
+                    <option value="sumatera">🌋 Sumatera</option>
+                    <option value="jawa">🌋 Jawa & Bali</option>
+                    <option value="sulawesi">🌋 Sulawesi</option>
+                    <option value="papua">🌋 Papua & Maluku</option>
+                </select>
+            </div>
+            <div class="badge-live">
+                🟢 LIVE AUTO-UPDATE
+            </div>
+        </header>
+
+        <div class="kpi-row">
+            <div class="card kpi-card">
+                <h3>TOTAL GEMPA >= 3 Sr (24 Jam)</h3>
+                <span class="kpi-value" id="total-gempa">0</span>
+            </div>
+            <div class="card kpi-card warning">
+                <h3>GEMPA >= 5 Sr</h3>
+                <span class="kpi-value" id="sig-gempa">0</span>
+            </div>
+            <div class="card kpi-card info">
+                <h3>MAX MAGNITUDO</h3>
+                <span class="kpi-value" id="max-gempa">-</span>
+            </div>
+            <div class="card kpi-card info">
+                <h3>RATA-RATA MAGNITUDO</h3>
+                <span class="kpi-value" id="avg-gempa">-</span>
+            </div>            
+        </div>
+
+        <div class="main-content">
+            <div class="card map-wrapper">
+                <div id="map"></div>
+            </div>
+
+            <div class="sidebar">
+                <div id="global-swarm-alarm" class="alarm-banner">
+                    <div class="alarm-title">⚠️ PERINGATAN ANOMALI GLOBAL</div>
+                    <div class="alarm-desc">
+                        Terdeteksi <b id="swarm-count">0</b> Gunung Api dalam status SWARM! Cek peta segera.
+                    </div>
+                </div> 
+
+                <div class="card chart-widget">
+                    <h3>Tren Magnitudo</h3>
+                    <div class="chart-box">
+                        <canvas id="magChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card list-widget">
+                    <h3>Gempa Terkini</h3>
+                    <ul id="quake-list" class="quake-list">
+                        </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/map.js"></script>
+</body>
+</html>
