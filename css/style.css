@@ -248,4 +248,20 @@ ul.quake-list {
         height: 350px; /* Kunci tingginya (jangan pakai min-height) */
         min-height: unset;
     }
+    /* --- FIX #5: Legenda Collapsible di HP --- */
+    .info.legend {
+        max-height: 40px; /* Potong tinggi kotak */
+        overflow: hidden; /* Sembunyikan sisa teks di bawahnya */
+        transition: max-height 0.4s ease-in-out; /* Animasi mulus saat ditarik */
+        border-bottom: 3px solid #3498db; /* Garis biru di bawah sebagai penanda */
+        cursor: pointer; /* Ubah kursor jadi ikon jari */
+    }
+    
+    /* Saat legenda disentuh (tap) di layar HP, kotaknya memanjang ke bawah */
+    .info.legend:active, 
+    .info.legend:hover,
+    .info.legend:focus-within {
+        max-height: 400px; /* Panjang maksimal saat terbuka */
+        overflow-y: auto;
+    }
 }

@@ -1,7 +1,10 @@
 // ==========================================
 // 1. INIT MAP & BASEMAP
 // ==========================================
-const map = L.map("map").setView([-2.5, 118], 5);
+const ifMobile = window.innerWidth <= 900;
+const initialZoom = ifMobile ? 4 : 5; // Zoom 4 untuk HP, Zoom 5 untuk Laptop
+
+const map = L.map("map").setView([-2.5, 118], initialZoom);
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors"
@@ -548,7 +551,20 @@ if (regionSelector) {
         const coords = regionCoordinates[selectedRegion];
 
         if (coords) {
-            map.flyTo([coords[0], coords[1]], coords[2], {
+            // Cek apakah layar sedang dibuka di HP
+            const isMobile = window.innerWidth <= 900;
+            
+            // Ambil zoom default dari dictionary (coords[2])
+            let targetZoom = coords[2];
+            
+            // Jika di HP, kurangi zoom 1 level agar area terlihat lebih luas
+            if (isMobile) {
+                // Khusus untuk global, pastikan zoom tidak kurang dari 1
+                targetZoom = (selectedRegion === 'global') ? 1 : targetZoom - 1; 
+            }
+
+            // Terbang ke koordinat dengan zoom yang sudah disesuaikan
+            map.flyTo([coords[0], coords[1]], targetZoom, {
                 animate: true,
                 duration: 1.5
             });
@@ -573,7 +589,8 @@ const overlayMaps = {
   "Batas Lempeng Tektonik": plateLayer 
 };
 
-L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
+let isMobile = window.innerWidth <= 900;
+L.control.layers(null, overlayMaps, { collapsed: isMobile }).addTo(map);
 
 // Trigger update dashboard secara dinamis saat pengguna menggeser/zoom peta
 map.on('moveend', updateSmartDashboard);
