@@ -321,7 +321,22 @@ fetch('data/volcanoes.geojson')
         });
 
         const volcanoes = L.geoJSON(data, {
-            // Render marker dan daftarkan ke sistem UI Update (Swarm Tracker)
+            // ==========================================
+            // 1. BLOK FILTER BARU (Pembersihan Data)
+            // ==========================================
+            filter: function(feature) {
+                const statusErupsi = feature.properties["Last Known Eruption"];
+                
+                // Buang data jika nilainya kosong, "Unknown", atau "Undefined"
+                if (!statusErupsi || statusErupsi === "Unknown" || statusErupsi === "Undefined") {
+                    return false; // Jangan tampilkan di peta
+                }
+                return true; // Tampilkan sisanya di peta
+            },
+
+            // ==========================================
+            // 2. Render marker & daftarkan ke Swarm Tracker
+            // ==========================================
             pointToLayer: function(feature, latlng) {
                 const marker = L.marker(latlng, { icon: volcanoIcon });
                 
@@ -333,7 +348,9 @@ fetch('data/volcanoes.geojson')
                 return marker;
             },
             
-            // Render Popup Dinamis berbasis status Swarm
+            // ==========================================
+            // 3. Render Popup Dinamis
+            // ==========================================
             onEachFeature: function(feature, layer) {
                 if (!feature.properties["Volcano Name"]) return;
 
@@ -369,7 +386,7 @@ fetch('data/volcanoes.geojson')
         volcanoLayer.addLayer(volcanoes);
     })
     .catch(err => console.error("Gagal memuat data gunung api:", err));
-
+    
 // ==========================================
 // 8. DASHBOARD LOGIC (Sidebar, KPI, Chart)
 // ==========================================
