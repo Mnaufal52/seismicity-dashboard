@@ -9,7 +9,7 @@
 This project is an interactive Web GIS dashboard designed to monitor tectonic, seismic, and volcanic activity using open geoscience data. The dashboard integrates real-time earthquake events, tectonic plate boundaries, and volcanic locations to visualize Earth system interactions in a single interactive map environment.
 
 ## 2. Dashboard Preview
-![Dashboard Screenshot](Seismicity Dashboard.png)
+![Dashboard Screenshot](Dashboard-Preview.png)
 
 ## 3. Methodology & Key Features
 The dashboard was developed primarily using Vanilla JavaScript and the Leaflet.js library. Key features implemented include:
