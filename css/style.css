@@ -1,124 +1,164 @@
+/* ==========================================================================
+   TECTONIC-SEISMIC DASHBOARD STYLESHEET
+   ========================================================================== */
+
 /* --- 1. RESET DASAR --- */
+/* Menghapus spasi bawaan browser agar layout lebih presisi */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Mencegah elemen membengkak saat diberi padding */
     font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
 body {
-    background-color: #f4f6f8;
-    color: #333;
-    padding: 20px;
-    height: 100vh; /* KUNCI 1: Kunci tinggi body sama dengan tinggi layar */
-    overflow: hidden; /* KUNCI 2: Sembunyikan scrollbar utama web */
+    background-color: #f4f6f8; /* Warna latar abu-abu terang agar tidak sakit di mata */
+    color: #333; /* Warna teks utama (abu-abu gelap) */
+    padding: 20px; /* Jarak aman dari pinggir layar */
+    
+    /* PENTING: Pengaturan Tinggi Layar (App-like feel) */
+    height: 100vh; /* KUNCI 1: Kunci tinggi body persis sama dengan tinggi layar perangkat */
+    overflow: hidden; /* KUNCI 2: Sembunyikan scrollbar utama browser web */
 }
 
 /* --- 2. WADAH UTAMA --- */
 .dashboard-container {
-    max-width: 1400px;
-    margin: 0 auto;
+    max-width: 1400px; /* Batas lebar maksimal agar tidak terlalu melar di layar ultra-wide */
+    margin: 0 auto; /* Posisi di tengah layar */
+    
+    /* Logika Flexbox untuk menumpuk Header -> KPI -> Main Content ke bawah */
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 15px; /* Jarak seragam antar baris horizontal */
     height: 100%; /* Penuhi sisa tinggi dari body */
 }
 
-/* --- HEADER --- */
+/* --- 3. HEADER (BAGIAN ATAS) --- */
 .dashboard-header {
     background: white;
     padding: 15px 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-radius: 8px; /* Sudut membulat */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Bayangan tipis untuk efek melayang */
+    border-left: 5px solid #2c3e50; /* Garis aksen biru dongker di sebelah kiri */
+    
+    /* Flexbox untuk memisahkan Judul (kiri) dan Kontrol (kanan) */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-left: 5px solid #2c3e50;
+    justify-content: space-between; /* Dorong elemen ke ujung yang berlawanan */
+    align-items: center; /* Ratakan elemen secara vertikal di tengah */
 }
 
+/* Wadah untuk filter dropdown dan badge status */
 .header-right {
     display: flex;
     gap: 15px;
     align-items: center;
 }
 
+/* Desain teks label filter */
 .header-right label {
     font-size: 14px;
     font-weight: bold;
     color: #555;
 }
 
+/* Desain kotak dropdown wilayah */
 #region-selector {
     padding: 7px;
     border-radius: 4px;
     border: 1px solid #ccc;
     font-weight: bold;
-    cursor: pointer;
+    cursor: pointer; /* Ubah kursor jadi ikon tangan saat disorot */
 }
 
+/* Desain indikator status (Live Auto-Update) */
 .badge-live {
-    background-color: #e8f8f5;
-    color: #27ae60;
+    background-color: #e8f8f5; /* Latar hijau super tipis */
+    color: #27ae60; /* Teks hijau solid */
     padding: 6px 12px;
-    border-radius: 20px;
+    border-radius: 20px; /* Bentuk pil/kapsul membulat penuh */
     font-size: 13px;
     font-weight: bold;
-    border: 1px solid #2ecc71;
+    border: 1px solid #2ecc71; /* Garis batas hijau */
 }
 
-/* --- 3. BARIS KPI (ALARM) --- */
+/* --- 4. BARIS KPI (Key Performance Indicators) --- */
 .kpi-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* DIPERBAIKI: 4 Kolom untuk 4 kartu */
-    gap: 15px;
-    margin-bottom: 15px;
+    display: grid; /* Menggunakan CSS Grid untuk tata letak kolom yang kaku dan presisi */
+    
+    /* Membagi ruang menjadi 4 kolom yang sama persis (1fr = 1 fraction/bagian) */
+    grid-template-columns: repeat(4, 1fr); 
+    
+    gap: 15px; /* Jarak ruang antar kotak KPI */
+    margin-bottom: 15px; /* Memberi jarak dorongan ke bawah (ke arah peta) */
 }
 
+/* Desain dasar (Template) untuk setiap kotak KPI */
 .kpi-card {
     background: white;
     padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    border-top: 4px solid #3498db;
+    border-radius: 8px; /* Melengkungkan sudut kotak agar tidak tajam/kaku */
+    text-align: center; /* Memastikan teks judul dan angka berada di tengah */
+    
+    /* Membuat efek bayangan lembut (X-offset, Y-offset, Blur, Warna-Transparan) */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+    
+    border-top: 4px solid #3498db; /* Garis aksen tebal berwarna biru di bagian atas kotak */
 }
 
-.kpi-card.warning { border-color: #e74c3c; background-color: #fffaf9; }
-.kpi-card.info { border-color: #95a5a6; }
+/* Modifier 1: Warna khusus untuk kartu peringatan bahaya (Gempa >= 5 SR) */
+.kpi-card.warning { 
+    border-color: #e74c3c; /* Mengubah garis atas menjadi merah */
+    background-color: #fffaf9; /* Latar belakang diberi rona merah super tipis */
+}
 
+/* Modifier 2: Warna khusus untuk kartu informasi (Magnitudo) */
+.kpi-card.info { 
+    border-color: #95a5a6; /* Mengubah garis atas menjadi abu-abu netral */
+}
+
+/* Desain untuk angka raksasa di dalam kartu KPI */
 .kpi-value {
-    display: block;
-    font-size: 32px;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-top: 5px;
+    display: block; /* Memaksa angka untuk turun ke baris baru (tidak bersebelahan dengan teks lain) */
+    font-size: 32px; /* Ukuran font super besar */
+    font-weight: bold; /* Menebalkan angka agar mencolok */
+    color: #2c3e50; /* Warna abu-abu sangat gelap (mendekati hitam) */
+    margin-top: 5px; /* Memberi jarak sedikit dari teks judul di atasnya */
 }
 
-/* --- 4. KONTEN UTAMA (PETA & SIDEBAR) --- */
+/* --- 5. KONTEN UTAMA (PETA & SIDEBAR) --- */
 .main-content {
+    /* Menggunakan CSS Grid untuk membagi proporsi Peta (75%) dan Sidebar (25%) */
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 3fr 1fr; /* 3 fraction untuk kiri, 1 fraction untuk kanan */
     gap: 15px;
-    flex-grow: 1; /* KUNCI 3: Otomatis mengisi sisa ruang di bawah KPI */
-    min-height: 0; /* KUNCI 4: Mencegah grid melar ke bawah */
+    
+    /* PENTING: Membuat konten utama mengisi sisa tinggi layar di bawah KPI */
+    flex-grow: 1; 
+    
+    /* PENTING (Hati-hati): Jangan hapus ini! Mencegah grid melar ke bawah melewati batas layar */
+    min-height: 0; 
 }
 
-/* --- KOLOM KIRI: PETA --- */
+/* --- KOLOM KIRI: WADAH PETA --- */
 .map-wrapper {
     background: white;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: hidden; /* Memotong ujung peta yang kotak agar ikut melengkung sesuai wadahnya */
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 0; /* KUNCI 5: Jaga agar wrapper peta tidak bocor */
+    
+    /* PENTING: Mencegah wadah peta bocor dan mendorong layar ke bawah */
+    min-height: 0; 
 }
 
+/* Kanvas tempat Leaflet.js akan dirender */
 #map {
     width: 100%;
-    flex-grow: 1;
-    z-index: 1;
+    flex-grow: 1; /* Memaksa peta mengisi penuh seluruh tinggi wadahnya (.map-wrapper) */
+    z-index: 1; /* Memastikan peta selalu berada di atas latar belakang, tapi di bawah dropdown/popup */
 }
 
 /* --- KOLOM KANAN: SIDEBAR --- */
@@ -127,9 +167,12 @@ body {
     flex-direction: column;
     gap: 15px;
     height: 100%;
-    min-height: 0; /* KUNCI 6: Mencegah sidebar merusak tinggi layar */
+    
+    /* PENTING: Mencegah sidebar merusak tinggi layar saat data gempa sangat banyak */
+    min-height: 0; 
 }
 
+/* Template dasar untuk kotak Grafik dan kotak Daftar Gempa di sidebar */
 .chart-widget, .list-widget {
     background: white;
     padding: 15px;
@@ -137,77 +180,103 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
+/* --- WIDGET GRAFIK MAGNITUDO --- */
 .chart-box {
     position: relative;
-    height: 200px;
+    height: 200px; /* Kunci tinggi grafik agar konstan */
     width: 100%;
-    flex-shrink: 0; /* Pastikan chart tidak mengecil saat list gempa bertambah */
+    
+    /* PENTING: Mencegah kotak grafik menyusut/gepeng saat list gempa di bawahnya bertambah banyak */
+    flex-shrink: 0; 
 }
 
+/* --- WIDGET DAFTAR GEMPA TERKINI --- */
 .list-widget {
-    flex-grow: 1;
+    flex-grow: 1; /* Memaksa list gempa mengisi seluruh sisa ruang di bawah grafik */
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    min-height: 0; /* KUNCI 7: Paksa widget ini mengaktifkan scroll di dalamnya */
+    overflow: hidden; /* Cegah isi tumpah keluar dari wadah putih */
+    
+    /* PENTING: Syarat mutlak agar list bisa di-scroll di dalam kotaknya sendiri */
+    min-height: 0; 
 }
 
+/* Area Scroll untuk List Gempa */
 ul.quake-list {
-    list-style: none;
+    list-style: none; /* Hilangkan titik-titik (bullet) bawaan dari elemen list HTML */
     margin-top: 10px;
     padding: 0;
-    flex-grow: 1;
-    overflow-y: auto; /* Ini sekarang akan berfungsi! */
-    min-height: 0;
+    
+    flex-grow: 1; 
+    overflow-y: auto; /* KUNCI SCROLL: Munculkan scrollbar vertikal hanya jika isi melebihi kotak */
+    min-height: 0; /* Pengunci terakhir agar trik scrollbar di atas bisa beroperasi penuh */
 }
 
+/* Desain untuk masing-masing baris gempa di dalam list */
 .quake-list li {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #eee; /* Garis pemisah tipis antar gempa */
     padding: 12px 5px;
     font-size: 13px;
     line-height: 1.4;
 }
 
-/* --- ANIMASI --- */
+/* ==========================================================================
+   6. ANIMASI & EFEK VISUAL
+   ========================================================================== */
+
+/* --- Indikator Gempa Baru (Radar Merah Berkedip) --- */
 .pulse-alert {
     background-color: #D0021B;
-    border-radius: 50%;
+    border-radius: 50%; /* Membuat kotak menjadi lingkaran sempurna */
     border: 2px solid #fff;
+    /* Menjalankan animasi 'pulsing' selama 1.5 detik, berulang tanpa henti (infinite) */
     animation: pulsing 1.5s infinite; 
 }
 
+/* Timeline (Frame-by-frame) untuk animasi pulsing */
 @keyframes pulsing {
-    0% { box-shadow: 0 0 0 0 rgba(208, 2, 27, 0.7); }
-    70% { box-shadow: 0 0 0 15px rgba(208, 2, 27, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(208, 2, 27, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(208, 2, 27, 0.7); } /* Awal: Bayangan pekat di titik nol */
+    70% { box-shadow: 0 0 0 15px rgba(208, 2, 27, 0); } /* Tengah: Membesar hingga 15px dan mulai pudar */
+    100% { box-shadow: 0 0 0 0 rgba(208, 2, 27, 0); } /* Akhir: Menghilang seutuhnya */
 }
 
+/* --- Indikator Gunung Api Swarm (Segitiga Merah Menyala) --- */
 .swarm-alert {
+    /* Trik CSS murni untuk membuat bentuk SEGITIGA tanpa gambar/ikon */
     width: 0;
     height: 0;
     border-left: 12px solid transparent;
     border-right: 12px solid transparent;
-    border-bottom: 20px solid #FF0000;
+    border-bottom: 20px solid #FF0000; 
+    
     position: relative;
+    /* Animasi glowing, 'alternate' membuat animasinya maju-mundur secara halus */
     animation: swarm-glowing 1s infinite alternate; 
 }
 
+/* Timeline untuk efek cahaya berpendar (glowing) */
 @keyframes swarm-glowing {
-    0% { filter: drop-shadow(0 0 2px rgba(255, 0, 0, 0.4)); }
-    100% { filter: drop-shadow(0 0 18px rgba(255, 0, 0, 1)); }
+    0% { filter: drop-shadow(0 0 2px rgba(255, 0, 0, 0.4)); } /* Redup */
+    100% { filter: drop-shadow(0 0 18px rgba(255, 0, 0, 1)); } /* Terang benderang */
 }
 
-/* --- RESPONSIVE DESIGN UNTUK MOBILE (HANYA BERLAKU DI HP) --- */
+/* ==========================================================================
+   7. RESPONSIVE DESIGN (TAMPILAN MOBILE / HP)
+   ========================================================================== */
+
+/* RUANG ISOLASI: Kode di bawah ini HANYA aktif jika layar <= 900px */
 @media (max-width: 900px) {
+    
+    /* Batalkan penguncian layar desktop, izinkan HP untuk scroll ke bawah */
     body {
         height: auto;
         overflow: auto; 
-        padding: 10px; /* Kurangi jarak pinggir layar agar lebih lega */
+        padding: 10px; /* Kurangi jarak pinggir layar agar tidak sempit */
     }
     
     .dashboard-container { height: auto; gap: 10px; }
     
-    /* FIX #3: Header & KPI Dikecilkan agar Peta naik ke layar utama */
+    /* Ubah header yang tadinya bersebelahan (kiri-kanan) menjadi bertumpuk atas-bawah */
     .dashboard-header {
         flex-direction: column;
         align-items: flex-start;
@@ -217,14 +286,16 @@ ul.quake-list {
     .dashboard-header h1 { font-size: 18px; }
     .dashboard-header p { font-size: 12px; }
     
+    /* Ubah KPI dari 4 kolom menjadi 2 kolom (Grid 2x2) */
     .kpi-row { 
         grid-template-columns: repeat(2, 1fr); 
         gap: 10px; 
     }
-    .kpi-card { padding: 10px; } /* Kotak lebih tipis */
-    .kpi-card h3 { font-size: 10px; } /* Teks judul KPI mengecil */
-    .kpi-value { font-size: 22px; margin-top: 2px; } /* Angka mengecil */
+    .kpi-card { padding: 10px; } 
+    .kpi-card h3 { font-size: 10px; } 
+    .kpi-value { font-size: 22px; margin-top: 2px; } 
     
+    /* Ubah Layout Utama: Peta dan Sidebar bertumpuk atas-bawah */
     .main-content {
         display: flex;
         flex-direction: column;
@@ -232,36 +303,38 @@ ul.quake-list {
         gap: 10px;
     }
     
-    /* FIX #1 & #4: Memastikan Peta proporsional dan Legend/Popup mengecil */
+    /* Kunci tinggi peta di HP agar tidak terlalu pendek */
     .map-wrapper { min-height: 450px; } 
     
-    .leaflet-control { font-size: 11px !important; } /* Teks legenda mengecil */
+    /* Penyesuaian ukuran teks pada elemen Leaflet (Legenda & Popup) */
+    .leaflet-control { font-size: 11px !important; } 
     .leaflet-control-layers-expanded {
         padding: 6px !important;
-        max-height: 150px; /* Cegah legenda memanjang ke bawah */
-        overflow-y: auto;
+        max-height: 150px; 
+        overflow-y: auto; /* Jika kotak layer terlalu panjang, jadikan bisa di-scroll */
     }
-    .leaflet-popup-content { font-size: 12px; margin: 10px; } /* Popup merapat */
+    .leaflet-popup-content { font-size: 12px; margin: 10px; } 
     
-    /* FIX #2: Kunci tinggi list agar memunculkan scrollbar di dalamnya */
+    /* Kunci tinggi kotak daftar gempa agar bisa di-scroll secara internal */
     .list-widget { 
-        height: 350px; /* Kunci tingginya (jangan pakai min-height) */
+        height: 350px; 
         min-height: unset;
     }
-    /* --- FIX #5: Legenda Collapsible di HP --- */
+    
+    /* --- Legenda Collapsible (Buka-Tutup) --- */
     .info.legend {
-        max-height: 40px; /* Potong tinggi kotak */
-        overflow: hidden; /* Sembunyikan sisa teks di bawahnya */
-        transition: max-height 0.4s ease-in-out; /* Animasi mulus saat ditarik */
-        border-bottom: 3px solid #3498db; /* Garis biru di bawah sebagai penanda */
-        cursor: pointer; /* Ubah kursor jadi ikon jari */
+        max-height: 40px; /* Potong tinggi kotak agar tidak menutupi peta */
+        overflow: hidden; 
+        transition: max-height 0.4s ease-in-out; /* Efek ditarik mulus saat disentuh */
+        border-bottom: 3px solid #3498db; 
+        cursor: pointer; 
     }
     
-    /* Saat legenda disentuh (tap) di layar HP, kotaknya memanjang ke bawah */
+    /* Saat pengguna HP menyentuh kotak legenda, rentangkan ke bawah */
     .info.legend:active, 
     .info.legend:hover,
     .info.legend:focus-within {
-        max-height: 400px; /* Panjang maksimal saat terbuka */
+        max-height: 400px; 
         overflow-y: auto;
     }
 }
